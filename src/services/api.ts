@@ -10,8 +10,13 @@ type ChatResponse = {
 
 // Resolve API base URL from environment. Prefer NEXT_PUBLIC_API_BASE, then VITE_API_BASE.
 // Default to local dev API at http://localhost:5000.
-// Prefer Vite env `VITE_API_BASE_URL`, then fallback to `VITE_API_BASE`, else localhost
+// Resolve API base in this order:
+// 1) runtime override via window.__API_BASE (no rebuild required)
+// 2) Vite env `VITE_API_BASE_URL`
+// 3) Vite env `VITE_API_BASE`
+// 4) fallback localhost
 const API_BASE: string =
+  (typeof window !== 'undefined' && (window as any)?.__API_BASE) ||
   (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE_URL) ||
   (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE) ||
   'http://localhost:5000';
