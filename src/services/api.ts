@@ -10,13 +10,10 @@ type ChatResponse = {
 
 // Resolve API base URL from environment. Prefer NEXT_PUBLIC_API_BASE, then VITE_API_BASE.
 // Default to local dev API at http://localhost:5000.
-// Prefer NEXT_PUBLIC_API_BASE from Vite/Runtime, then VITE_API_BASE, else localhost
+// Prefer Vite env `VITE_API_BASE_URL`, then fallback to `VITE_API_BASE`, else localhost
 const API_BASE: string =
-  // Vite exposes envs via import.meta.env (both VITE_* and custom public vars)
-  (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.NEXT_PUBLIC_API_BASE) ||
+  (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE_URL) ||
   (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE) ||
-  // Fallback for frameworks that inject process.env at runtime (rare in Vite builds)
-  (typeof process !== 'undefined' && (process as any)?.env?.NEXT_PUBLIC_API_BASE) ||
   'http://localhost:5000';
 
 export function ensureUserId(): string {
