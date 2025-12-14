@@ -15,11 +15,13 @@ type ChatResponse = {
 // 2) Vite env `VITE_API_BASE_URL`
 // 3) Vite env `VITE_API_BASE`
 // 4) fallback localhost
-const API_BASE: string =
-  (typeof window !== 'undefined' && (window as any)?.__API_BASE) ||
-  (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE_URL) ||
-  (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_API_BASE) ||
-  'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+if (!API_BASE) {
+  throw new Error(
+    'VITE_API_BASE_URL is not defined. Please set it in your environment variables.'
+  );
+}
 
 export function ensureUserId(): string {
   try {
